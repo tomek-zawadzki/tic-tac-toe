@@ -32,10 +32,16 @@ main {
   justify-content: center;
   align-items: center;
   font-size: 4rem;
-
+  background-color: #fff;
   border: 1px solid black;
   min-width: 5rem;
   min-height: 5rem;
+  transition: background-color 0.3s;
+  cursor: pointer;
+}
+
+.square:hover {
+  background-color: rgb(222, 202, 202);
 }
 
 .btn {
@@ -46,6 +52,14 @@ main {
   width: 8rem;
   cursor: pointer;
   transition: background-color 0.3s;
+}
+
+.square-is-cycle {
+  content: "O";
+}
+
+.square-is-cross {
+  content: "X";
 }
 
 .btn:hover {
