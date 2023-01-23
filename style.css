@@ -3,3 +3,51 @@
   margin: 0;
   padding: 0;
 }
+
+body {
+  font-family: sans-serif;
+}
+
+h1 {
+  margin: 1rem 0 2rem;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.game {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  width: min-content;
+  padding: 2rem;
+}
+
+.square {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 4rem;
+
+  border: 1px solid black;
+  min-width: 5rem;
+  min-height: 5rem;
+}
+
+.btn {
+  padding: 0.4rem 0.6rem;
+  background-color: #333;
+  border: none;
+  color: #fff;
+  width: 8rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn:hover {
+  background-color: #666;
+}
