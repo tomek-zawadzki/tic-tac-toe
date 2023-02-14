@@ -1,8 +1,10 @@
 const gameBox = document.querySelector(".game");
-
+const resetBtn = document.querySelector(".reset-btn");
+const winnerText = document.querySelector(".game-winner");
 const player_O = "O";
 const player_X = "X";
 let currentPlayer = player_O;
+let options = ["", "", "", "", "", "", "", "", ""];
 
 const winConditions = [
   [0, 1, 2],
@@ -15,16 +17,12 @@ const winConditions = [
   [2, 4, 6],
 ];
 
-let options = [null, null, null, null, null, null, null, null, null];
-
 const generateSquares = () => {
   for (let square = 0; square < 9; square++) {
     const squareCell = document.createElement("button");
     squareCell.classList.add("square");
     squareCell.setAttribute("id", parseInt([square] - 1) + 1);
     gameBox.appendChild(squareCell);
-    console.log(square);
-    console.log(squareCell);
   }
 };
 
@@ -38,10 +36,9 @@ squareBtn.forEach((btn) => {
     if (!options[id]) {
       options[id] = currentPlayer;
       e.target.innerText = currentPlayer;
-      console.log(options);
       changePlayer();
       if (whoWon(currentPlayer)) {
-        console.log(`${currentPlayer} wins`);
+        winnerText.innerHTML = `${currentPlayer} wins`;
       }
     }
   });
@@ -82,3 +79,14 @@ const whoWon = (player) => {
     }
   }
 };
+
+const resetGame = () => {
+  options = ["", "", "", "", "", "", "", "", ""];
+
+  squareBtn.forEach((square) => {
+    square.innerHTML = "";
+  });
+  currentPlayer = player_O;
+};
+
+resetBtn.addEventListener("click", resetGame);

@@ -19,6 +19,13 @@ main {
   align-items: center;
 }
 
+.game-winner {
+  font-size: 3rem;
+  font-weight: bold;
+  color: rgb(80, 83, 16);
+  padding: 1rem 0 1rem;
+}
+
 .game {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
