@@ -61,8 +61,10 @@ const startVsComputer = () => {
       const id = e.target.id;
       if (!options[id]) {
         e.target.innerHTML = "O";
-        options[id] = currentPlayer;
-        currentPlayer = currentPlayer === player_O ? computerMove() : player_O;
+        options[id] = "O";
+
+        computerMove();
+        console.log(options);
       }
     });
   });
@@ -109,13 +111,17 @@ const whoWon = (player) => {
 };
 
 const computerMove = () => {
-  const random = Math.floor(Math.random() * options.length);
-  const filteredOptions = options.filter((option) => option === "");
-  const squareToMark = filteredOptions[random];
-  // squareBtn[squareToMark].innerHTML = "X";
-  console.log(filteredOptions.entries().next().value);
-  console.log(options.filter((option) => option === "").length);
-  console.log(Object.entries(options));
+  const availableSquare = Object.entries(options)
+    .filter((option) => option[1] === "")
+    .map((option) => option[0]);
+
+  const random = Math.floor(Math.random() * availableSquare.length);
+  // const filteredOptions = options.filter((option) => option === "");
+  // const squareToMark = filteredOptions[random];
+  // // squareBtn[squareToMark].innerHTML = "X";
+  options[random] = "X";
+
+  return (squareBtn[availableSquare[random]].innerHTML = "X");
 };
 
 const resetGame = () => {
