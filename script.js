@@ -4,7 +4,7 @@ const winnerText = document.querySelector(".game-winner");
 const playerOponent = document.querySelector(".player-btn");
 const computerOponent = document.querySelector(".computer-btn");
 let squareBtn = document.querySelectorAll(".square");
-
+console.log(squareBtn[0]);
 const player_O = "O";
 const player_X = "X";
 let currentPlayer = player_O;
@@ -22,11 +22,15 @@ let options = ["", "", "", "", "", "", "", "", ""];
 // ];
 
 const generateSquares = () => {
-  for (let square = 0; square < 9; square++) {
-    const squareCell = document.createElement("button");
-    squareCell.classList.add("square");
-    squareCell.setAttribute("id", parseInt([square] - 1) + 1);
-    gameBox.appendChild(squareCell);
+  if (squareBtn[0] === undefined) {
+    for (let square = 0; square < 9; square++) {
+      const squareCell = document.createElement("button");
+      squareCell.classList.add("square");
+      squareCell.setAttribute("id", parseInt([square] - 1) + 1);
+      gameBox.appendChild(squareCell);
+    }
+  } else {
+    resetGame();
   }
 };
 
@@ -111,17 +115,19 @@ const whoWon = (player) => {
 };
 
 const computerMove = () => {
-  const availableSquare = Object.entries(options)
-    .filter((option) => option[1] === "")
-    .map((option) => option[0]);
+  if (options.filter((option) => option === "").length === 0) {
+    winnerText.textContent = "Draw";
+  } else {
+    const availableSquare = Object.entries(options)
+      .filter((option) => option[1] === "")
+      .map((option) => option[0]);
 
-  const random = Math.floor(Math.random() * availableSquare.length);
-  // const filteredOptions = options.filter((option) => option === "");
-  // const squareToMark = filteredOptions[random];
-  // // squareBtn[squareToMark].innerHTML = "X";
-  options[random] = "X";
+    const random = Math.floor(Math.random() * availableSquare.length);
 
-  return (squareBtn[availableSquare[random]].innerHTML = "X");
+    squareBtn[availableSquare[random]].innerHTML = "X";
+    options[availableSquare[random]] =
+      squareBtn[availableSquare[random]].innerHTML;
+  }
 };
 
 const resetGame = () => {
