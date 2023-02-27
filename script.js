@@ -4,12 +4,11 @@ const winnerText = document.querySelector(".game-winner");
 const playerOponent = document.querySelector(".player-btn");
 const computerOponent = document.querySelector(".computer-btn");
 let squareBtn = document.querySelectorAll(".square");
-console.log(squareBtn[0]);
+
 const player_O = "O";
 const player_X = "X";
 let currentPlayer = player_O;
 let options = ["", "", "", "", "", "", "", "", ""];
-
 // const winConditions = [
 //   [0, 1, 2],
 //   [3, 4, 5],
@@ -26,11 +25,52 @@ const generateSquares = () => {
     for (let square = 0; square < 9; square++) {
       const squareCell = document.createElement("button");
       squareCell.classList.add("square");
-      squareCell.setAttribute("id", parseInt([square] - 1) + 1);
+      squareCell.setAttribute("id", parseInt([square]));
       gameBox.appendChild(squareCell);
     }
   } else {
     resetGame();
+  }
+};
+
+const playerMove = (e) => {
+  const id = e.target.id;
+  if (!options[id]) {
+    options[id] = currentPlayer;
+    e.target.innerText = currentPlayer;
+    console.log(currentPlayer);
+
+    if (whoWon(currentPlayer)) {
+      winnerText.innerHTML = `${currentPlayer} wins`;
+    }
+    changePlayer();
+  }
+};
+
+const computerMove = (e) => {
+  const id = e.target.id;
+  if (!options[id]) {
+    e.target.innerHTML = "O";
+    options[id] = "O";
+    computerMoveLogic();
+    console.log(options);
+    console.log(currentPlayer);
+  }
+};
+
+const computerMoveLogic = () => {
+  if (options.filter((option) => option === "").length === 0) {
+    winnerText.textContent = "Draw";
+  } else {
+    const availableSquare = Object.entries(options)
+      .filter((option) => option[1] === "")
+      .map((option) => option[0]);
+
+    const random = Math.floor(Math.random() * availableSquare.length);
+
+    squareBtn[availableSquare[random]].innerHTML = "X";
+    options[availableSquare[random]] =
+      squareBtn[availableSquare[random]].innerHTML;
   }
 };
 
@@ -40,18 +80,7 @@ const startVsPlayer = () => {
   squareBtn = document.querySelectorAll(".square");
 
   squareBtn.forEach((btn) => {
-    btn.addEventListener("click", (e) => {
-      const id = e.target.id;
-      if (!options[id]) {
-        options[id] = currentPlayer;
-        e.target.innerText = currentPlayer;
-
-        changePlayer();
-        if (whoWon(currentPlayer)) {
-          winnerText.innerHTML = `${currentPlayer} wins`;
-        }
-      }
-    });
+    btn.addEventListener("click", playerMove);
   });
 };
 
@@ -61,16 +90,7 @@ const startVsComputer = () => {
   squareBtn = document.querySelectorAll(".square");
 
   squareBtn.forEach((btn) => {
-    btn.addEventListener("click", (e) => {
-      const id = e.target.id;
-      if (!options[id]) {
-        e.target.innerHTML = "O";
-        options[id] = "O";
-
-        computerMove();
-        console.log(options);
-      }
-    });
+    btn.addEventListener("click", computerMove);
   });
 };
 
@@ -114,24 +134,15 @@ const whoWon = (player) => {
   }
 };
 
-const computerMove = () => {
-  if (options.filter((option) => option === "").length === 0) {
-    winnerText.textContent = "Draw";
-  } else {
-    const availableSquare = Object.entries(options)
-      .filter((option) => option[1] === "")
-      .map((option) => option[0]);
-
-    const random = Math.floor(Math.random() * availableSquare.length);
-
-    squareBtn[availableSquare[random]].innerHTML = "X";
-    options[availableSquare[random]] =
-      squareBtn[availableSquare[random]].innerHTML;
-  }
-};
-
 const resetGame = () => {
   options = ["", "", "", "", "", "", "", "", ""];
+
+  squareBtn.forEach((btn) => {
+    btn.removeEventListener("click", playerMove);
+  });
+  squareBtn.forEach((btn) => {
+    btn.removeEventListener("click", computerMove);
+  });
 
   squareBtn.forEach((square) => {
     square.innerHTML = "";
