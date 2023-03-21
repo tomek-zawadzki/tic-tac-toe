@@ -9,16 +9,26 @@ const player_O = "O";
 const player_X = "X";
 let currentPlayer = player_O;
 let options = ["", "", "", "", "", "", "", "", ""];
-// const winConditions = [
-//   [0, 1, 2],
-//   [3, 4, 5],
-//   [6, 7, 8],
-//   [0, 3, 6],
-//   [1, 4, 7],
-//   [2, 5, 8],
-//   [0, 4, 8],
-//   [2, 4, 6],
-// ];
+let gameVsComputer = false;
+let gameVsPlayer = false;
+const winConditions = [
+  [0, 1, 2],
+  [3, 4, 5],
+  [6, 7, 8],
+  [0, 3, 6],
+  [1, 4, 7],
+  [2, 5, 8],
+  [0, 4, 8],
+  [2, 4, 6],
+];
+
+const checkWin = (current) => {
+  winConditions.some((condition) => {
+    condition.every((index) => {
+      console.log(options[index].classList.contains(current));
+    });
+  });
+};
 
 const generateSquares = () => {
   if (squareBtn[0] === undefined) {
@@ -38,8 +48,7 @@ const playerMove = (e) => {
   if (!options[id]) {
     options[id] = currentPlayer;
     e.target.innerText = currentPlayer;
-    console.log(currentPlayer);
-
+    console.log(options);
     if (whoWon(currentPlayer)) {
       winnerText.innerHTML = `${currentPlayer} wins`;
     }
@@ -74,24 +83,26 @@ const computerMoveLogic = () => {
   }
 };
 
-const startVsPlayer = () => {
+const generateGame = (whoPlay) => {
   generateSquares();
 
   squareBtn = document.querySelectorAll(".square");
 
   squareBtn.forEach((btn) => {
-    btn.addEventListener("click", playerMove);
+    btn.addEventListener("click", whoPlay);
   });
 };
 
+const startVsPlayer = () => {
+  gameVsComputer = false;
+  gameVsPlayer = true;
+  generateGame(playerMove);
+};
+
 const startVsComputer = () => {
-  generateSquares();
-
-  squareBtn = document.querySelectorAll(".square");
-
-  squareBtn.forEach((btn) => {
-    btn.addEventListener("click", computerMove);
-  });
+  gameVsComputer = true;
+  gameVsPlayer = false;
+  generateGame(computerMove);
 };
 
 const changePlayer = () => {
@@ -136,13 +147,16 @@ const whoWon = (player) => {
 
 const resetGame = () => {
   options = ["", "", "", "", "", "", "", "", ""];
-
-  squareBtn.forEach((btn) => {
-    btn.removeEventListener("click", playerMove);
-  });
-  squareBtn.forEach((btn) => {
-    btn.removeEventListener("click", computerMove);
-  });
+  if (gameVsComputer) {
+    squareBtn.forEach((btn) => {
+      btn.removeEventListener("click", playerMove);
+    });
+  }
+  if (gameVsPlayer) {
+    squareBtn.forEach((btn) => {
+      btn.removeEventListener("click", computerMove);
+    });
+  }
 
   squareBtn.forEach((square) => {
     square.innerHTML = "";
