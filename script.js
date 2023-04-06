@@ -11,6 +11,7 @@ let currentPlayer = player_O;
 let options = ["", "", "", "", "", "", "", "", ""];
 let gameVsComputer = false;
 let gameVsPlayer = false;
+let winner0 = false;
 const winConditions = [
   [0, 1, 2],
   [3, 4, 5],
@@ -50,9 +51,11 @@ const computerMove = (e) => {
   if (!options[id]) {
     e.target.innerHTML = "O";
     options[id] = "O";
-    computerMoveLogic();
+    checkScores();
+    if (winner0 === false) {
+      computerMoveLogic();
+    }
   }
-  checkScores();
 };
 
 const computerMoveLogic = () => {
@@ -116,10 +119,11 @@ const checkScores = () => {
 
     if (win0) {
       roundWon = true;
+      winner0 = true;
+      // removeComputerMove();
+      removePlayerMove();
       winnerText.innerHTML = `${currentPlayer} wins`;
       resetBtn.style.display = "block";
-      removePlayerMove();
-      removeComputerMove();
     } else if (winX) {
       roundWon = true;
       currentPlayer = "X";
@@ -136,6 +140,7 @@ const checkScores = () => {
 
 const resetGame = () => {
   options = ["", "", "", "", "", "", "", "", ""];
+  winner0 = false;
   removeComputerMove();
   removePlayerMove();
 
