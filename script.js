@@ -106,12 +106,15 @@ const checkScores = () => {
     if (win0) {
       roundWon = true;
       winnerText.innerHTML = `${currentPlayer} wins`;
+      resetBtn.style.display = "block";
     } else if (winX) {
       roundWon = true;
       currentPlayer = "X";
       winnerText.innerHTML = `${currentPlayer} wins`;
+      resetBtn.style.display = "block";
     } else if (options.every((option) => option !== "") && roundWon === false) {
       winnerText.innerHTML = "draw";
+      resetBtn.style.display = "block";
     }
   });
 };
@@ -132,6 +135,7 @@ const resetGame = () => {
   squareBtn.forEach((square) => {
     square.innerHTML = "";
   });
+  resetBtn.style.display = "none";
   winnerText.innerHTML = "";
   currentPlayer = player_O;
 };

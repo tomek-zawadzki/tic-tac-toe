@@ -72,3 +72,7 @@ main {
 .btn:hover {
   background-color: #666;
 }
+
+.reset-btn {
+  display: none;
+}
