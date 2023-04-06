@@ -97,6 +97,17 @@ const changePlayer = () => {
   currentPlayer = currentPlayer === player_O ? player_X : player_O;
 };
 
+const removeComputerMove = () => {
+  squareBtn.forEach((btn) => {
+    btn.removeEventListener("click", computerMove);
+  });
+};
+const removePlayerMove = () => {
+  squareBtn.forEach((btn) => {
+    btn.removeEventListener("click", playerMove);
+  });
+};
+
 const checkScores = () => {
   let roundWon = false;
   winConditions.forEach((arr) => {
@@ -107,11 +118,15 @@ const checkScores = () => {
       roundWon = true;
       winnerText.innerHTML = `${currentPlayer} wins`;
       resetBtn.style.display = "block";
+      removePlayerMove();
+      removeComputerMove();
     } else if (winX) {
       roundWon = true;
       currentPlayer = "X";
       winnerText.innerHTML = `${currentPlayer} wins`;
       resetBtn.style.display = "block";
+      removePlayerMove();
+      removeComputerMove();
     } else if (options.every((option) => option !== "") && roundWon === false) {
       winnerText.innerHTML = "draw";
       resetBtn.style.display = "block";
@@ -121,16 +136,8 @@ const checkScores = () => {
 
 const resetGame = () => {
   options = ["", "", "", "", "", "", "", "", ""];
-  if (gameVsComputer) {
-    squareBtn.forEach((btn) => {
-      btn.removeEventListener("click", playerMove);
-    });
-  }
-  if (gameVsPlayer) {
-    squareBtn.forEach((btn) => {
-      btn.removeEventListener("click", computerMove);
-    });
-  }
+  removeComputerMove();
+  removePlayerMove();
 
   squareBtn.forEach((square) => {
     square.innerHTML = "";
@@ -138,6 +145,17 @@ const resetGame = () => {
   resetBtn.style.display = "none";
   winnerText.innerHTML = "";
   currentPlayer = player_O;
+
+  if (gameVsPlayer) {
+    squareBtn.forEach((btn) => {
+      btn.addEventListener("click", playerMove);
+    });
+  }
+  if (gameVsComputer) {
+    squareBtn.forEach((btn) => {
+      btn.addEventListener("click", computerMove);
+    });
+  }
 };
 
 playerOponent.addEventListener("click", startVsPlayer);
