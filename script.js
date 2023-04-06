@@ -120,7 +120,7 @@ const checkScores = () => {
     if (win0) {
       roundWon = true;
       winner0 = true;
-      // removeComputerMove();
+      removeComputerMove();
       removePlayerMove();
       winnerText.innerHTML = `${currentPlayer} wins`;
       resetBtn.style.display = "block";
