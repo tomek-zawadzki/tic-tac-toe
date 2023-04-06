@@ -22,14 +22,6 @@ const winConditions = [
   [2, 4, 6],
 ];
 
-const checkWin = (current) => {
-  winConditions.some((condition) => {
-    condition.every((index) => {
-      console.log(options[index].classList.contains(current));
-    });
-  });
-};
-
 const generateSquares = () => {
   if (squareBtn[0] === undefined) {
     for (let square = 0; square < 9; square++) {
@@ -48,10 +40,7 @@ const playerMove = (e) => {
   if (!options[id]) {
     options[id] = currentPlayer;
     e.target.innerText = currentPlayer;
-    console.log(options);
-    if (whoWon(currentPlayer)) {
-      winnerText.innerHTML = `${currentPlayer} wins`;
-    }
+    checkScores();
     changePlayer();
   }
 };
@@ -62,14 +51,13 @@ const computerMove = (e) => {
     e.target.innerHTML = "O";
     options[id] = "O";
     computerMoveLogic();
-    console.log(options);
-    console.log(currentPlayer);
   }
+  checkScores();
 };
 
 const computerMoveLogic = () => {
   if (options.filter((option) => option === "").length === 0) {
-    winnerText.textContent = "Draw";
+    return;
   } else {
     const availableSquare = Object.entries(options)
       .filter((option) => option[1] === "")
@@ -109,40 +97,23 @@ const changePlayer = () => {
   currentPlayer = currentPlayer === player_O ? player_X : player_O;
 };
 
-const whoWon = (player) => {
-  if (options[0] === player) {
-    if (options[1] === player && options[2] === player) {
-      return true;
-    }
-    if (options[3] === player && options[6] === player) {
-      return true;
-    }
-    if (options[4] === player && options[8] === player) {
-      return true;
-    }
-  }
+const checkScores = () => {
+  let roundWon = false;
+  winConditions.forEach((arr) => {
+    const win0 = arr.every((cell) => squareBtn[cell].textContent === "O");
+    const winX = arr.every((cell) => squareBtn[cell].textContent === "X");
 
-  if (options[8] === player) {
-    if (options[2] === player && options[5] === player) {
-      return true;
+    if (win0) {
+      roundWon = true;
+      winnerText.innerHTML = `${currentPlayer} wins`;
+    } else if (winX) {
+      roundWon = true;
+      currentPlayer = "X";
+      winnerText.innerHTML = `${currentPlayer} wins`;
+    } else if (options.every((option) => option !== "") && roundWon === false) {
+      winnerText.innerHTML = "draw";
     }
-    if (options[7] === player && options[6] === player) {
-      return true;
-    }
-  }
-
-  if (options[4] === player) {
-    if (options[3] === player && options[5] === player) {
-      return true;
-    }
-    if (options[1] === player && options[7] === player) {
-      return true;
-    }
-  }
-
-  if (options.filter((option) => option === "").length === 0) {
-    winnerText.textContent = "Draw";
-  }
+  });
 };
 
 const resetGame = () => {
