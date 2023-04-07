@@ -12,6 +12,8 @@ let options = ["", "", "", "", "", "", "", "", ""];
 let gameVsComputer = false;
 let gameVsPlayer = false;
 let winner0 = false;
+let winnerX = false;
+
 const winConditions = [
   [0, 1, 2],
   [3, 4, 5],
@@ -55,6 +57,7 @@ const computerMove = (e) => {
     if (winner0 === false) {
       computerMoveLogic();
     }
+    checkScores();
   }
 };
 
@@ -126,6 +129,7 @@ const checkScores = () => {
       resetBtn.style.display = "block";
     } else if (winX) {
       roundWon = true;
+      winnerX = true;
       currentPlayer = "X";
       winnerText.innerHTML = `${currentPlayer} wins`;
       resetBtn.style.display = "block";
@@ -141,6 +145,7 @@ const checkScores = () => {
 const resetGame = () => {
   options = ["", "", "", "", "", "", "", "", ""];
   winner0 = false;
+  winnerX = false;
   removeComputerMove();
   removePlayerMove();
 
